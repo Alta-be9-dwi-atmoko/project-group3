@@ -3,6 +3,7 @@ package data
 import (
 	"errors"
 	"fmt"
+	"project/group3/features/middlewares"
 	"project/group3/features/users"
 
 	_bcrypt "golang.org/x/crypto/bcrypt"
@@ -34,4 +35,28 @@ func (repo *mysqlUserRepository) InsertData(input users.Core) (row int, err erro
 		return 0, errors.New("failed to insert data, your email is already registered")
 	}
 	return int(resultcreate.RowsAffected), nil
+}
+
+func (repo *mysqlUserRepository) LoginUserDB(authData users.AuthRequestData) (token, name, avatarUrl string, err error) {
+	userData := User{}
+	result := repo.DB.Where("email = ?", authData.Email).First(&userData)
+	if result.Error != nil {
+		return "", "", "", result.Error
+	}
+
+	if result.RowsAffected != 1 {
+		return "", "", "", errors.New("failed to login")
+	}
+
+	errCrypt := _bcrypt.CompareHashAndPassword([]byte(userData.Password), []byte(authData.Password))
+	if errCrypt != nil {
+		return "", "", "", errors.New("password incorrect")
+	}
+
+	token, errToken := middlewares.CreateToken(int(userData.ID), userData.AvatarUrl)
+	if errToken != nil {
+		return "", "", "", errToken
+	}
+
+	return token, userData.Name, userData.AvatarUrl, nil
 }
