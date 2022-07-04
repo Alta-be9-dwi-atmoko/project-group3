@@ -1,10 +1,7 @@
 package presentation
 
 import (
-	"io/ioutil"
 	"net/http"
-	"strconv"
-	"time"
 
 	"project/group3/features/users"
 	_requestUser "project/group3/features/users/presentation/request"
@@ -30,51 +27,7 @@ func (h *UserHandler) PostUser(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("failed to bind data, check your input"))
 	}
 
-	file, errFile := c.FormFile("product_picture")
-
-	if errFile != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "file failed to upload",
-		})
-	}
-
-	srcFile, errSrcFile := file.Open()
-
-	if errSrcFile != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "file failed to upload",
-		})
-	}
-
-	fileByte, _ := ioutil.ReadAll(srcFile)
-	fileType := http.DetectContentType(fileByte)
-	fileSize := file.Size
-
-	if fileType != "image/png" {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "file failed to upload",
-		})
-	}
-
-	if fileSize < 1024 {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "file failed to upload",
-		})
-	}
-
-	fileName := "uploads/" + strconv.FormatInt(time.Now().Unix(), 10) + ".png"
-
-	errPermission := ioutil.WriteFile(fileName, fileByte, 0777)
-
-	if errPermission != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "file failed to upload",
-		})
-	}
-
-	defer srcFile.Close()
-
-	userReq.AvatarUrl = "http://127.0.0.1:80/" + fileName
+	userReq.AvatarUrl = ""
 	dataUser := _requestUser.ToCore(userReq)
 	row, errCreate := h.userBusiness.CreateData(dataUser)
 	if row == -1 {
@@ -85,4 +38,20 @@ func (h *UserHandler) PostUser(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, _helper.ResponseOkNoData("success"))
+}
+
+func (h *UserHandler) LoginAuth(c echo.Context) error {
+	authData := users.AuthRequestData{}
+	c.Bind(&authData)
+	token, name, avatarUrl, e := h.userBusiness.LoginUser(authData)
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("email or password incorrect"))
+	}
+
+	data := map[string]interface{}{
+		"token":     token,
+		"name":      name,
+		"avatarUrl": avatarUrl,
+	}
+	return c.JSON(http.StatusOK, _helper.ResponseOkWithData("login success", data))
 }
