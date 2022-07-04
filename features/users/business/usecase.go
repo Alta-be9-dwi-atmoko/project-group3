@@ -45,3 +45,8 @@ func (uc *userUseCase) UpdateData(input users.Core, idUser int) (row int, err er
 	row, err = uc.userData.UpdateDataDB(userReq, idUser)
 	return row, err
 }
+
+func (uc *userUseCase) GetUserByMe(idFromToken int) (data users.Core, err error) {
+	data, err = uc.userData.SelectDataByMe(idFromToken)
+	return data, err
+}
