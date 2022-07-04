@@ -38,8 +38,9 @@ func toCoreList(data []User) []users.Core {
 
 func FromCore(core users.Core) User {
 	return User{
-		Name:     core.Name,
-		Email:    core.Email,
-		Password: core.Password,
+		Name:      core.Name,
+		Email:     core.Email,
+		Password:  core.Password,
+		AvatarUrl: core.AvatarUrl,
 	}
 }
