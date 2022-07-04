@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"mime/multipart"
 	"os"
-	_config "project3/eventapp/config"
+	_config "project/group3/config"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
