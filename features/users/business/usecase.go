@@ -27,3 +27,21 @@ func (uc *userUseCase) LoginUser(authData users.AuthRequestData) (token, name, a
 	token, name, avatarUrl, err = uc.userData.LoginUserDB(authData)
 	return token, name, avatarUrl, err
 }
+
+func (uc *userUseCase) UpdateData(input users.Core, idUser int) (row int, err error) {
+	userReq := map[string]interface{}{}
+	if input.Name != "" {
+		userReq["name"] = input.Name
+	}
+	if input.Email != "" {
+		userReq["email"] = input.Email
+	}
+	if input.Password != "" {
+		userReq["password"] = input.Password
+	}
+	if input.AvatarUrl != "" {
+		userReq["avatar_url"] = input.AvatarUrl
+	}
+	row, err = uc.userData.UpdateDataDB(userReq, idUser)
+	return row, err
+}
