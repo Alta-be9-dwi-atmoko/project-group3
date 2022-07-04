@@ -21,6 +21,6 @@ jobs:
             git pull origin main
             docker stop group3Container
             docker rm group3Container
-            docker rmi group2-api
+            docker rmi group3-api
             docker build -t group3-api:latest .
             docker run -d -p 80:80 --name group3Container group3-api:latest
