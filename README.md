@@ -1,4 +1,4 @@
-# E-Commerce Group 2
+# Event Planning App Group 3
 
 This project is for practice to create an e-commerce web and also
  part of the assignment for graduation phase 2
