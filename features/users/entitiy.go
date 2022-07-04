@@ -13,7 +13,9 @@ type Core struct {
 }
 
 type Business interface {
+	CreateData(input Core) (row int, err error)
 }
 
 type Data interface {
+	InsertData(input Core) (row int, err error)
 }
