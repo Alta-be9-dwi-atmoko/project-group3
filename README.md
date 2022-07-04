@@ -1,6 +1,6 @@
 # Event Planning App Group 3
 
-This project is for practice to create an e-commerce web and also
+This project is for practice to create an event planning web and also
  part of the assignment for graduation phase 2
 
 ## Authors
