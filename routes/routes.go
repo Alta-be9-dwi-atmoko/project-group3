@@ -2,6 +2,7 @@ package routes
 
 import (
 	"project/group3/factory"
+	_middleware "project/group3/features/middlewares"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -18,6 +19,8 @@ func New(presenter factory.Presenter) *echo.Echo {
 	}))
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.POST("/users", presenter.UserPresenter.PostUser)
+	e.POST("/login", presenter.UserPresenter.LoginAuth)
+	e.PUT("/users/:id", presenter.UserPresenter.PutUser, _middleware.JWTMiddleware())
 
 	return e
 
