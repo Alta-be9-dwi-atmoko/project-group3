@@ -18,6 +18,10 @@ type Event struct {
 	UserId      int    `json:"user_id" form:"user_id"`
 }
 
+type Attendee struct {
+	Status uint `json:"status" form:"status"`
+}
+
 func ToCore(req Event) events.Core {
 	return events.Core{
 		Image:       req.Image,

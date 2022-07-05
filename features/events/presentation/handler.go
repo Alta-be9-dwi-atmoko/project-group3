@@ -210,3 +210,33 @@ func (h *EventHandler) DestroyEvent(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, _helper.ResponseOkNoData("success"))
 }
+
+func (h *EventHandler) JoinEvent(c echo.Context) error {
+	id := c.Param("id")
+
+	var data _requestEvent.Attendee
+
+	errBind := c.Bind(&data)
+
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("failed to bind data, check your input"))
+	}
+
+	status := int(data.Status)
+
+	idEvent, _ := strconv.Atoi(id)
+
+	idToken, _, errToken := _middlewares.ExtractToken(c)
+
+	if errToken != nil {
+		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("invalid token"))
+	}
+
+	_, err := h.EventBusiness.JoinEventBusiness(idEvent, idToken, status)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("failed to join event"))
+	}
+
+	return c.JSON(http.StatusOK, _helper.ResponseOkNoData("success"))
+}

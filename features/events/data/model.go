@@ -25,12 +25,27 @@ type Event struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	Attendee    []Attendee     `gorm:"foreignKey:EventID;references:ID;constraint:OnDelete:CASCADE"`
+}
+
+type Attendee struct {
+	// gorm.Model
+	ID        uint `gorm:"primaryKey;autoIncrement"`
+	UserID    uint `json:"user_id" form:"user_id"`
+	User      User
+	EventID   uint `json:"event_id" form:"event_id"`
+	Event     Event
+	Status    uint `json:"status" form:"status" gorm:"type:integer; default:1"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 type User struct {
 	gorm.Model
-	Name   string  `json:"name" form:"name"`
-	Events []Event `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE"`
+	Name      string     `json:"name" form:"name"`
+	Events    []Event    `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE"`
+	Attendees []Attendee `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE"`
 }
 
 func (data *Event) toCore() events.Core {
