@@ -50,3 +50,8 @@ func (uc *userUseCase) GetUserByMe(idFromToken int) (data users.Core, err error)
 	data, err = uc.userData.SelectDataByMe(idFromToken)
 	return data, err
 }
+
+func (uc *userUseCase) DeleteDataById(idUser int) (row int, err error) {
+	row, err = uc.userData.DeleteDataByIdDB(idUser)
+	return row, err
+}
