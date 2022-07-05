@@ -42,3 +42,9 @@ func (uc *eventUseCase) DetailImageEventBusiness(id int) (response string, err e
 
 	return response, err
 }
+
+func (uc *eventUseCase) DeleteEventBusiness(id int, idUser int) (row int, err error) {
+	row, err = uc.eventData.DeleteEventData(id, idUser)
+
+	return row, err
+}

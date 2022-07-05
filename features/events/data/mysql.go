@@ -90,3 +90,33 @@ func (repo *mysqlEventRepository) DetailImageEventData(id int) (response string,
 
 	return dataEvent.Image, nil
 }
+
+func (repo *mysqlEventRepository) DeleteEventData(id int, idUser int) (row int, err error) {
+	var dataEvent Event
+
+	searchProduct := repo.db.Find(&dataEvent, id)
+
+	if searchProduct.RowsAffected != 1 {
+		return 0, fmt.Errorf("failed delete event")
+	}
+
+	if searchProduct.Error != nil {
+		return 0, searchProduct.Error
+	}
+
+	if dataEvent.UserID != uint(idUser) {
+		return 0, fmt.Errorf("failed delete event")
+	}
+
+	result := repo.db.Delete(&dataEvent, id)
+
+	if result.RowsAffected != 1 {
+		return 0, fmt.Errorf("event not found")
+	}
+
+	if result.Error != nil {
+		return 0, result.Error
+	}
+
+	return int(result.RowsAffected), nil
+}

@@ -33,6 +33,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.POST("/events", presenter.EventPresenter.CreateEvent, _middleware.JWTMiddleware())
 	e.GET("/events/:id", presenter.EventPresenter.DetailEvent)
 	e.PUT("/events/:id", presenter.EventPresenter.EditEvent, _middleware.JWTMiddleware())
+	e.DELETE("/events/:id", presenter.EventPresenter.DestroyEvent, _middleware.JWTMiddleware())
 
 	// comments
 	e.POST("/comments/:id", presenter.CommentPresenter.PostComment, _middleware.JWTMiddleware())
