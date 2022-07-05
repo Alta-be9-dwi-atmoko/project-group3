@@ -190,3 +190,23 @@ func (h *EventHandler) EditEvent(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, _helper.ResponseOkNoData("success"))
 }
+
+func (h *EventHandler) DestroyEvent(c echo.Context) error {
+	id := c.Param("id")
+
+	idEvent, _ := strconv.Atoi(id)
+
+	idToken, _, errToken := _middlewares.ExtractToken(c)
+
+	if errToken != nil {
+		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("invalid token"))
+	}
+
+	_, err := h.EventBusiness.DeleteEventBusiness(idEvent, idToken)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("failed to delete data"))
+	}
+
+	return c.JSON(http.StatusOK, _helper.ResponseOkNoData("success"))
+}
