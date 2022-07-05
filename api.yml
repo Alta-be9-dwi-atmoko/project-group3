@@ -4,64 +4,69 @@ info:
   description: Event Planning App
   version: 1.0.0
 servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/darmon17/project3.1/1.0.0
   - url: 3.86.179.206
 tags:
   - name: Autentication
   - name: Users
-  - name: Event
+  - name: Events
   - name: Event Participation
 
 paths:
-  #autentication
-  # /login:
-  #   post:
-  #     tags:
-  #       - Autentication
-  #     parameters: []
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: "#"
-  #           example:
-  #             email: altera@gmail.com
-  #             password: qwerty123
-  #     responses:
-  #       "200":
-  #         description: Success Response
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: "#/components/schemas/responseLoginSuccess"
-  #             examples:
-  #               responseData1:
-  #                 description: response success 1
-  #                 value:
-  #                   {
-  #                     code: 200,
-  #                     status: "success",
-  #                     message: "Login Success",
-  #                     data:
-  #                       {
-  #                         nama: "Sutiaji",
-  #                         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
-  #                       },
-  #                   }
-  #       "400":
-  #         description: Failed Response
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: "#/components/schemas/failedResponse"
-  #             examples:
-  #               responseData1:
-  #                 description: response failed 1
-  #                 value:
-  #                   {
-  #                     code: 400,
-  #                     status: "failed",
-  #                     message: "email or password incorrect",
-  #                   }
+  #login
+  /login:
+    post:
+      tags:
+        - Autentication
+      requestBody:
+         content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:                 
+                  email:
+                    type: string
+                  password:
+                    type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseLoginSuccess"
+              examples:
+                responseData1:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "Login Success",
+                      data:
+                        {
+                          avatarUrl: "https://gudanggroup3.s3.amazonaws.com/2022-07-05%2015%3A17%3A33.jpg",
+                          name: "heritest",
+                          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
+                        },
+                    }
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "email or password incorrect",
+                    }
   #users
   /users:
     post:
@@ -110,14 +115,7 @@ paths:
             image/png:
                   schema:
                     type: string
-                    format: jpg/png
-        # '200':
-        #   description: Logo image in PNG/JPG format
-        #   content:
-        #     image/png:
-        #       schema:
-        #         type: string
-        #         format: jpg/png
+                    format: binary
                 
         "400":
           description: Failed Response
@@ -134,134 +132,490 @@ paths:
                       status: "failed",
                       message: "please make sure all fields are filled in correctly",
                     }
-  # /users/{id}:
-  #   get:
-  #     tags:
-  #       - Users
-  #     security:
-  #       - JWTAuth: []
-  #     parameters:
-  #       - name: iduser
-  #         description: get data by id
-  #         in: query
-  #         schema:
-  #           type: integer
-  #           example: 1
-  #         required: true
-  #     responses:
-  #       "403":
-  #         description: forbiden
-  #       "404":
-  #         description: No data
-  #       "200":
-  #         description: Success Response
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: "#"
-  #             examples:
-  #               response data:
-  #                 description: response success 1
-  #                 value:
-  #                   {
-  #                     id: 1,
-  #                     name: "sutiaji",
-  #                     email: "sutiaji@gmail.com",
-  #                     created_at: 0001-01-01T00:00:00Z,
-  #                   }
-  #       "400":
-  #         description: Failed Response
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: "#/components/schemas/failedResponse"
-  #             examples:
-  #               responseData1:
-  #                 description: response failed 1
-  #                 value: { code: 400, status: "failed", message: "bad request" }
-    # put:
-    #   tags:
-    #     - Users
-    #   security:
-    #     - JWTAuth: []
-    #   requestBody:
-    #     content:
-    #       application/json:
-    #         schema:
-    #           $ref: "#"
-    #         example:
-    #           name: sutiaji
-    #           email: altera@gmail.com
-    #           password: qwerty123
-    #   parameters:
-    #     - name: iduser
-    #       in: query
-    #       schema:
-    #         type: integer
-    #         example: 1
-    #       required: true
-    #   responses:
-    #     "200":
-    #       description: Success Response
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: "#"
-    #           examples:
-    #             response data:
-    #               value:
-    #                 code: 200
-    #                 status: "success"
-    #                 message: "Successful Operation"
+  /users/myprofile:
+    get:
+      tags:
+        - Users
+      security:
+        - JWTAuth: []
+      responses:
+        "403":
+          description: forbiden
+        "404":
+          description: No data
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      id: 1,
+                      name: "sutiaji",
+                      email: "sutiaji@gmail.com",
+                      avatar_url: "https://gudanggroup3.s3.amazonaws.com/2022-07-05%2015%3A17%3A33.jpg",
+                      created_at: 0001-01-01T00:00:00Z,
+                    }
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: { code: 400, status: "failed", message: "bad request" }
+  /users/{id}: 
+    put:
+      tags:
+        - Users
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string                  
+                email:
+                  type: string
+                password:
+                  type: string
+                profileImage:
+                  type: string
+                  format: binary
+            encoding:
+              profileImage: # Property name
+                contentType: image/png, image/jpeg
+                headers: # Custom headers
+                  X-Custom-Header:
+                    description: This is a custom header
+                    schema:
+                      type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  value:
+                    code: 200
+                    status: "success"
+                    message: "Successful Operation"
 
-    #     "400":
-    #       description: Failed Response
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: "#/components/schemas/failedResponse"
-    #           examples:
-    #             responseData1:
-    #               description: response failed 1
-    #               value: { code: 400, status: "failed", message: "Bad Request" }
-  #   delete:
-  #     tags:
-  #       - Users
-  #     security:
-  #       - JWTAuth: []
-  #     parameters:
-  #       - name: iduser
-  #         in: query
-  #         schema:
-  #           type: integer
-  #           example: 1
-  #         required: true
-  #     responses:
-  #       "200":
-  #         description: Success Response
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: "#"
-  #             examples:
-  #               response data:
-  #                 value:
-  #                   code: 200
-  #                   status: "success"
-  #                   message: "Successful Operation"
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: { code: 400, status: "failed", message: "Bad Request" }
+    delete:
+      tags:
+        - Users
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: iduser
+          in: query
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  value:
+                    code: 200
+                    status: "success"
+                    message: "Successful Operation"
 
-  #       "400":
-  #         description: Failed Response
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: "#/components/schemas/failedResponse"
-  #             examples:
-  #               responseData1:
-  #                 description: response failed 1
-  #                 value: { code: 400, status: "failed", message: "Bad Request" }
-  #product
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: { code: 400, status: "failed", message: "Bad Request" }
  
+  #  event
+  /events:
+    post:
+      tags:
+        - Events
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: binary
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
+    get:
+      tags:
+        - Events
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: binary
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
+  /event/{id}:
+    get:
+      tags:
+        - Events
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: binary
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
+    put:
+      tags:
+        - Events
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: binary
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
+    delete:
+      tags:
+        - Events
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: binary
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
+  /event/participation:
+    post:
+      tags:
+        - Event Participation
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: binary
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
+    get:
+      tags:
+        - Event Participation
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: binary
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
+  /event/comment:
+    post:
+      tags:
+        - Event Participation
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: binary
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
+    get:
+      tags:
+        - Event Participation
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: binary
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
 
 components:
   securitySchemes:
