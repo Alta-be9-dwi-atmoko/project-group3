@@ -27,6 +27,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.POST("/login", presenter.UserPresenter.LoginAuth)
 	e.PUT("/users/:id", presenter.UserPresenter.PutUser, _middleware.JWTMiddleware())
 	e.GET("/myprofile", presenter.UserPresenter.GetByMe, _middleware.JWTMiddleware())
+	e.DELETE("/users/:id", presenter.UserPresenter.DeleteByID, _middleware.JWTMiddleware())
 
 	// events
 	e.POST("/events", presenter.EventPresenter.CreateEvent, _middleware.JWTMiddleware())

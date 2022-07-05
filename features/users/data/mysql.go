@@ -83,3 +83,14 @@ func (repo *mysqlUserRepository) SelectDataByMe(idFromToken int) (data users.Cor
 	return dataUser.toCore(), nil
 }
 
+func (repo *mysqlUserRepository) DeleteDataByIdDB(idUser int) (row int, err error) {
+	result := repo.DB.Delete(&User{}, idUser)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	if result.RowsAffected != 1 {
+		return 0, errors.New("failed to delete data")
+	}
+	return int(result.RowsAffected), nil
+
+}
