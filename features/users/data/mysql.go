@@ -82,3 +82,4 @@ func (repo *mysqlUserRepository) SelectDataByMe(idFromToken int) (data users.Cor
 	}
 	return dataUser.toCore(), nil
 }
+
