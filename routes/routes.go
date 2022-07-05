@@ -36,7 +36,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.DELETE("/events/:id", presenter.EventPresenter.DestroyEvent, _middleware.JWTMiddleware())
 	e.POST("/join-event/:id", presenter.EventPresenter.JoinEvent, _middleware.JWTMiddleware())
 
-	// comments
+	// comments //
 	e.POST("/comments/:id", presenter.CommentPresenter.PostComment, _middleware.JWTMiddleware())
 	e.GET("/comments/:id", presenter.CommentPresenter.GetComment)
 	e.DELETE("/comments/:id", presenter.CommentPresenter.DeleteComment, _middleware.JWTMiddleware())
