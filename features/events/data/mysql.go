@@ -217,3 +217,27 @@ func (repo *mysqlEventRepository) JoinEventData(id, idUser, status int) (row int
 		return int(result.RowsAffected), nil
 	}
 }
+
+func (repo *mysqlEventRepository) AllEventData(limit, offset int) (response []events.Core, err error) {
+	var dataEvents []Event
+
+	result := repo.db.Preload("User").Order("id desc").Limit(limit).Offset(offset).Find(&dataEvents)
+
+	if result.Error != nil {
+		return []events.Core{}, result.Error
+	}
+
+	return toCoreList(dataEvents), nil
+}
+
+func (repo *mysqlEventRepository) MyEventData(limit, offset, idUser int) (response []events.Core, err error) {
+	var dataEvents []Event
+
+	result := repo.db.Preload("User").Order("id desc").Limit(limit).Offset(offset).Find(&dataEvents, "user_id = ?", idUser)
+
+	if result.Error != nil {
+		return []events.Core{}, result.Error
+	}
+
+	return toCoreList(dataEvents), nil
+}

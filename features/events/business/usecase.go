@@ -54,3 +54,15 @@ func (uc *eventUseCase) JoinEventBusiness(id, idUser, status int) (row int, err 
 
 	return row, err
 }
+
+func (uc *eventUseCase) AllEventBusiness(limit, offset int) (response []events.Core, err error) {
+	response, err = uc.eventData.AllEventData(limit, offset)
+
+	return response, err
+}
+
+func (uc *eventUseCase) MyEventBusiness(limit, offset, idUser int) (response []events.Core, err error) {
+	response, err = uc.eventData.MyEventData(limit, offset, idUser)
+
+	return response, err
+}
