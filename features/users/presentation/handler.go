@@ -9,6 +9,8 @@ import (
 	_middleware "project/group3/features/middlewares"
 	"project/group3/features/users"
 	_requestUser "project/group3/features/users/presentation/request"
+	_responseUser "project/group3/features/users/presentation/response"
+
 	_helper "project/group3/helper"
 
 	"github.com/labstack/echo/v4"
@@ -135,3 +137,14 @@ func (h *UserHandler) PutUser(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, _helper.ResponseOkNoData("success"))
 }
+
+func (h *UserHandler) GetByMe(c echo.Context) error {
+	idFromToken, _, _ := _middleware.ExtractToken(c)
+	result, errGet := h.userBusiness.GetUserByMe(idFromToken)
+	if errGet != nil {
+		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("failed to get data user"))
+	}
+
+	return c.JSON(http.StatusOK, _helper.ResponseOkWithData("success", _responseUser.FromCore(result)))
+}
+

@@ -1,0 +1,300 @@
+openapi: "3.0.2"
+info:
+  title: Event Planning App
+  description: Event Planning App
+  version: 1.0.0
+servers:
+  - url: 3.86.179.206
+tags:
+  - name: Autentication
+  - name: Users
+  - name: Event
+  - name: Event Participation
+
+paths:
+  #autentication
+  # /login:
+  #   post:
+  #     tags:
+  #       - Autentication
+  #     parameters: []
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#"
+  #           example:
+  #             email: altera@gmail.com
+  #             password: qwerty123
+  #     responses:
+  #       "200":
+  #         description: Success Response
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/responseLoginSuccess"
+  #             examples:
+  #               responseData1:
+  #                 description: response success 1
+  #                 value:
+  #                   {
+  #                     code: 200,
+  #                     status: "success",
+  #                     message: "Login Success",
+  #                     data:
+  #                       {
+  #                         nama: "Sutiaji",
+  #                         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
+  #                       },
+  #                   }
+  #       "400":
+  #         description: Failed Response
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/failedResponse"
+  #             examples:
+  #               responseData1:
+  #                 description: response failed 1
+  #                 value:
+  #                   {
+  #                     code: 400,
+  #                     status: "failed",
+  #                     message: "email or password incorrect",
+  #                   }
+  #users
+  /users:
+    post:
+      tags:
+        - Users
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string                  
+                email:
+                  type: string
+                password:
+                  type: string
+                profileImage:
+                  type: string
+                  format: binary
+            encoding:
+              profileImage: # Property name
+                contentType: image/png, image/jpeg
+                headers: # Custom headers
+                  X-Custom-Header:
+                    description: This is a custom header
+                    schema:
+                      type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#"
+              examples:
+                response data:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "success",
+                      message: "success operation create data",
+                    }
+            image/png:
+                  schema:
+                    type: string
+                    format: jpg/png
+        # '200':
+        #   description: Logo image in PNG/JPG format
+        #   content:
+        #     image/png:
+        #       schema:
+        #         type: string
+        #         format: jpg/png
+                
+        "400":
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "please make sure all fields are filled in correctly",
+                    }
+  # /users/{id}:
+  #   get:
+  #     tags:
+  #       - Users
+  #     security:
+  #       - JWTAuth: []
+  #     parameters:
+  #       - name: iduser
+  #         description: get data by id
+  #         in: query
+  #         schema:
+  #           type: integer
+  #           example: 1
+  #         required: true
+  #     responses:
+  #       "403":
+  #         description: forbiden
+  #       "404":
+  #         description: No data
+  #       "200":
+  #         description: Success Response
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#"
+  #             examples:
+  #               response data:
+  #                 description: response success 1
+  #                 value:
+  #                   {
+  #                     id: 1,
+  #                     name: "sutiaji",
+  #                     email: "sutiaji@gmail.com",
+  #                     created_at: 0001-01-01T00:00:00Z,
+  #                   }
+  #       "400":
+  #         description: Failed Response
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/failedResponse"
+  #             examples:
+  #               responseData1:
+  #                 description: response failed 1
+  #                 value: { code: 400, status: "failed", message: "bad request" }
+    # put:
+    #   tags:
+    #     - Users
+    #   security:
+    #     - JWTAuth: []
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: "#"
+    #         example:
+    #           name: sutiaji
+    #           email: altera@gmail.com
+    #           password: qwerty123
+    #   parameters:
+    #     - name: iduser
+    #       in: query
+    #       schema:
+    #         type: integer
+    #         example: 1
+    #       required: true
+    #   responses:
+    #     "200":
+    #       description: Success Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#"
+    #           examples:
+    #             response data:
+    #               value:
+    #                 code: 200
+    #                 status: "success"
+    #                 message: "Successful Operation"
+
+    #     "400":
+    #       description: Failed Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/failedResponse"
+    #           examples:
+    #             responseData1:
+    #               description: response failed 1
+    #               value: { code: 400, status: "failed", message: "Bad Request" }
+  #   delete:
+  #     tags:
+  #       - Users
+  #     security:
+  #       - JWTAuth: []
+  #     parameters:
+  #       - name: iduser
+  #         in: query
+  #         schema:
+  #           type: integer
+  #           example: 1
+  #         required: true
+  #     responses:
+  #       "200":
+  #         description: Success Response
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#"
+  #             examples:
+  #               response data:
+  #                 value:
+  #                   code: 200
+  #                   status: "success"
+  #                   message: "Successful Operation"
+
+  #       "400":
+  #         description: Failed Response
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/failedResponse"
+  #             examples:
+  #               responseData1:
+  #                 description: response failed 1
+  #                 value: { code: 400, status: "failed", message: "Bad Request" }
+  #product
+ 
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    requestLogin:
+      type: object
+      properties:
+        "email":
+          type: string
+          minLength: 1
+        "password":
+          type: string
+          minLength: 1
+    responseLoginSuccess:
+      type: object
+      properties:
+        {
+          "code": { type: number },
+          "message": { type: string },
+          "status": { type: string },
+          "data": { type: object },
+        }
+    failedResponse:
+      type: object
+      properties:
+        {
+          "code": { type: number },
+          "message": { type: string },
+          "status": { type: string },
+        }
+    
+# tnya mas fakhry, 1 cara buat respon form data (name, email,pasword (upload file)) agar mudah di eksekusi oleh FE

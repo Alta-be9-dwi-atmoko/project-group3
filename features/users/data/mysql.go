@@ -73,3 +73,13 @@ func (repo *mysqlUserRepository) UpdateDataDB(data map[string]interface{}, idUse
 
 	return int(result.RowsAffected), nil
 }
+
+func (repo *mysqlUserRepository) SelectDataByMe(idFromToken int) (data users.Core, err error) {
+	dataUser := User{}
+	result := repo.DB.Find(&dataUser, idFromToken)
+	if result.Error != nil {
+		return users.Core{}, result.Error
+	}
+	return dataUser.toCore(), nil
+}
+

@@ -1,6 +1,7 @@
 package migration
 
 import (
+
 	_mEvents "project/group3/features/events/data"
 	_mUsers "project/group3/features/users/data"
 

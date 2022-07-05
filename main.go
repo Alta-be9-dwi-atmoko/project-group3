@@ -19,5 +19,6 @@ func main() {
 
 	e := routes.New(presenter)
 
-	e.Start(":8000")
+	e.Start(":80")
+
 }
