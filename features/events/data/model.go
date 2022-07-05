@@ -65,15 +65,16 @@ func toCoreList(data []Event) []events.Core {
 
 func fromCore(core events.Core) Event {
 	return Event{
-		Image:     core.Image,
-		EventName: core.EventName,
-		Category:  core.Category,
-		Link:      core.Link,
-		Lat:       core.Lat,
-		Long:      core.Long,
-		Quota:     core.Quota,
-		Date:      core.Date,
-		Time:      core.Time,
-		UserID:    uint(core.User.ID),
+		Image:       core.Image,
+		EventName:   core.EventName,
+		Category:    core.Category,
+		Link:        core.Link,
+		Lat:         core.Lat,
+		Long:        core.Long,
+		Quota:       core.Quota,
+		Date:        core.Date,
+		Time:        core.Time,
+		Description: core.Description,
+		UserID:      uint(core.User.ID),
 	}
 }

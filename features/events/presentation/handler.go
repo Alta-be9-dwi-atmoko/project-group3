@@ -34,7 +34,6 @@ func (h *EventHandler) CreateEvent(c echo.Context) error {
 	errBind := c.Bind(&newEvent)
 
 	validate := validator.New()
-
 	if errValidate := validate.Struct(newEvent); errValidate != nil {
 		return errValidate
 	}

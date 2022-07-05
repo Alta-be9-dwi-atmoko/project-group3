@@ -19,7 +19,6 @@ func NewEventRepository(conn *gorm.DB) events.Data {
 
 func (repo *mysqlEventRepository) InsertData(input events.Core) (response int, err error) {
 	event := fromCore(input)
-
 	result := repo.db.Create(&event)
 
 	if result.Error != nil {
