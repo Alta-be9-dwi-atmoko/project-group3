@@ -22,8 +22,9 @@ type Event struct {
 }
 
 type User struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID        int    `json:"id"`
+	Name      string `json:"name"`
+	AvatarUrl string `json:"avatar_url"`
 }
 
 func FromCore(data events.Core) Event {
@@ -41,8 +42,9 @@ func FromCore(data events.Core) Event {
 		Description: data.Description,
 		CreatedAt:   data.CreatedAt,
 		User: User{
-			ID:   data.User.ID,
-			Name: data.User.Name,
+			ID:        data.User.ID,
+			Name:      data.User.Name,
+			AvatarUrl: data.User.AvatarUrl,
 		},
 	}
 }

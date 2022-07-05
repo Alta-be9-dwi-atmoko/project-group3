@@ -44,6 +44,7 @@ type Attendee struct {
 type User struct {
 	gorm.Model
 	Name      string     `json:"name" form:"name"`
+	AvatarUrl string     `json:"avatar_url" form:"avatar_url"`
 	Events    []Event    `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE"`
 	Attendees []Attendee `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE"`
 }
@@ -52,8 +53,9 @@ func (data *Event) toCore() events.Core {
 	return events.Core{
 		ID: int(data.ID),
 		User: events.User{
-			ID:   int(data.User.ID),
-			Name: data.User.Name,
+			ID:        int(data.User.ID),
+			Name:      data.User.Name,
+			AvatarUrl: data.User.AvatarUrl,
 		},
 		Image:       data.Image,
 		EventName:   data.EventName,

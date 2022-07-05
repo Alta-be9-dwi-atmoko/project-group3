@@ -22,8 +22,9 @@ type Core struct {
 }
 
 type User struct {
-	ID   int
-	Name string
+	ID        int
+	Name      string
+	AvatarUrl string
 }
 
 type Business interface {
@@ -33,6 +34,8 @@ type Business interface {
 	DetailImageEventBusiness(idEvent int) (response string, err error)
 	DeleteEventBusiness(idEvent, idUser int) (response int, err error)
 	JoinEventBusiness(idEvent, idUser, status int) (response int, err error)
+	AllEventBusiness(limit, offset int) (result []Core, err error)
+	MyEventBusiness(limit, offset, idUser int) (result []Core, err error)
 }
 
 type Data interface {
@@ -42,4 +45,6 @@ type Data interface {
 	DetailImageEventData(idEvent int) (response string, err error)
 	DeleteEventData(idEvent, idUser int) (response int, err error)
 	JoinEventData(idEvent, idUser, status int) (response int, err error)
+	AllEventData(limit, offset int) (result []Core, err error)
+	MyEventData(limit, offset, idUser int) (result []Core, err error)
 }
