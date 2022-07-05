@@ -28,3 +28,31 @@ func (repo *mysqlCommentRepository) InsertData(input comments.Core) (row int, er
 	}
 	return int(resultCreate.RowsAffected), nil
 }
+
+func (repo *mysqlCommentRepository) SelectCommentByIdEvent(idEvent int) (data []comments.Core, err error) {
+	dataComment := []Comment{}
+	result := repo.DB.Preload("User").Order("created_at DESC").Find(&dataComment).Where("event_id = ?", idEvent)
+	if result.Error != nil {
+		return []comments.Core{}, result.Error
+	}
+	return toCoreList(dataComment), nil
+}
+
+func (repo *mysqlCommentRepository) DeleteCommentByIdComment(idComment, idFromToken int) (row int, err error) {
+	dataComment := Comment{}
+	idCheck := repo.DB.First(&dataComment, idComment)
+	if idCheck.Error != nil {
+		return 0, idCheck.Error
+	}
+	if idFromToken != dataComment.UserID {
+		return -1, errors.New("you don't have access")
+	}
+	result := repo.DB.Delete(&Comment{}, idComment)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	if result.RowsAffected != 1 {
+		return 0, errors.New("failed to delete data")
+	}
+	return int(result.RowsAffected), nil
+}

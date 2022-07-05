@@ -28,8 +28,9 @@ type Event struct {
 
 func (data *Comment) toCore() comments.Core {
 	return comments.Core{
-		ID:     int(data.ID),
-		UserID: int(data.UserID),
+		ID:       int(data.ID),
+		UserID:   int(data.UserID),
+		UserName: data.User.Name,
 		User: comments.User{
 			ID:   int(data.User.ID),
 			Name: data.User.Name,

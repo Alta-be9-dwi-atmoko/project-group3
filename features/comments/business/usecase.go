@@ -22,3 +22,13 @@ func (uc *commentUseCase) CreateData(input comments.Core) (row int, err error) {
 	row, err = uc.commentData.InsertData(input)
 	return row, err
 }
+
+func (uc *commentUseCase) GetCommentByIdEvent(idEvent int) (data []comments.Core, err error) {
+	data, err = uc.commentData.SelectCommentByIdEvent(idEvent)
+	return data, err
+}
+
+func (uc *commentUseCase) DeleteCommentById(idComment, idFromToken int) (row int, err error) {
+	data, err := uc.commentData.DeleteCommentByIdComment(idComment, idFromToken)
+	return data, err
+}

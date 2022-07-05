@@ -5,12 +5,14 @@ import (
 )
 
 type Comment struct {
+	ID      int    `json:"id"`
 	Name    string `json:"name"`
 	Comment string `json:"comment"`
 }
 
 func FromCore(data comments.Core) Comment {
 	return Comment{
+		ID:      data.ID,
 		Name:    data.UserName,
 		Comment: data.Comment,
 	}
