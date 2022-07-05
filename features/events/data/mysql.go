@@ -120,3 +120,100 @@ func (repo *mysqlEventRepository) DeleteEventData(id int, idUser int) (row int, 
 
 	return int(result.RowsAffected), nil
 }
+
+func (repo *mysqlEventRepository) JoinEventData(id, idUser, status int) (row int, err error) {
+	var dataEvent Event
+
+	// pengecekan pemilik event
+	searchEvent := repo.db.First(&dataEvent, id)
+
+	if searchEvent.Error != nil || searchEvent.RowsAffected != 1 {
+		return 0, fmt.Errorf("event not found")
+	}
+
+	if dataEvent.UserID == uint(idUser) {
+		return 0, fmt.Errorf("join event failed")
+	}
+
+	if status == 1 {
+		// pengecekan jumlah member event
+		var countAttendee int64
+		var countAttendee_ int64
+
+		rsCount := repo.db.Table("attendees").Where("event_id = ? AND status = ?", id, status).Count(&countAttendee)
+
+		if rsCount.Error != nil {
+			return 0, fmt.Errorf("join event failed")
+		}
+
+		if dataEvent.Quota <= uint(countAttendee) {
+			return 0, fmt.Errorf("join event failed")
+		}
+
+		// pengecekan apakah user sudah join sebelumnya
+		rsCount_ := repo.db.Table("attendees").Where("event_id = ? AND user_id = ?", id, idUser).Count(&countAttendee_)
+
+		if rsCount_.Error != nil {
+			return 0, fmt.Errorf("join event failed")
+		}
+
+		if countAttendee_ >= 1 {
+			// return 0, fmt.Errorf("join event failed")
+			// update
+			rsUpd := repo.db.Model(Attendee{}).Where("event_id = ? AND user_id = ?", id, idUser).Update("status", status)
+
+			if rsUpd.RowsAffected != 1 {
+				return 0, fmt.Errorf("join event failed")
+			}
+
+			if rsUpd.Error != nil {
+				return 0, fmt.Errorf("join event failed")
+			}
+
+			return int(rsUpd.RowsAffected), nil
+
+		}
+
+		var dataAttendee Attendee
+
+		dataAttendee.UserID = uint(idUser)
+		dataAttendee.EventID = uint(id)
+		dataAttendee.Status = uint(status)
+
+		result := repo.db.Create(&dataAttendee)
+
+		if result.Error != nil || result.RowsAffected != 1 {
+			return 0, fmt.Errorf("join event failed")
+		}
+
+		return int(result.RowsAffected), nil
+
+	} else {
+		// langsung cancel join event
+		// pengecekkan userid dan eventid
+		var checkData int64
+
+		rsCheck := repo.db.Table("attendees").Where("event_id = ? AND user_id = ?", id, idUser).Count(&checkData)
+
+		if rsCheck.Error != nil {
+			return 0, fmt.Errorf("cancel join event failed")
+		}
+
+		if checkData < 1 {
+			return 0, fmt.Errorf("cancel join event failed")
+		}
+
+		// update
+		result := repo.db.Model(Attendee{}).Where("event_id = ? AND user_id = ?", id, idUser).Update("status", status)
+
+		if result.RowsAffected != 1 {
+			return 0, fmt.Errorf("cancel join event failed")
+		}
+
+		if result.Error != nil {
+			return 0, fmt.Errorf("cancel join event failed")
+		}
+
+		return int(result.RowsAffected), nil
+	}
+}

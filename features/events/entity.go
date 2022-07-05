@@ -32,6 +32,7 @@ type Business interface {
 	UpdateEventBusiness(data Core, id int, idUser int) (response int, err error)
 	DetailImageEventBusiness(idEvent int) (response string, err error)
 	DeleteEventBusiness(idEvent, idUser int) (response int, err error)
+	JoinEventBusiness(idEvent, idUser, status int) (response int, err error)
 }
 
 type Data interface {
@@ -40,4 +41,5 @@ type Data interface {
 	UpdateEventData(data Core, id int, idUser int) (response int, err error)
 	DetailImageEventData(idEvent int) (response string, err error)
 	DeleteEventData(idEvent, idUser int) (response int, err error)
+	JoinEventData(idEvent, idUser, status int) (response int, err error)
 }

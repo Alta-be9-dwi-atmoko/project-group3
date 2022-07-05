@@ -48,3 +48,9 @@ func (uc *eventUseCase) DeleteEventBusiness(id int, idUser int) (row int, err er
 
 	return row, err
 }
+
+func (uc *eventUseCase) JoinEventBusiness(id, idUser, status int) (row int, err error) {
+	row, err = uc.eventData.JoinEventData(id, idUser, status)
+
+	return row, err
+}
