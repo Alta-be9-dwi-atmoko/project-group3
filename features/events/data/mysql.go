@@ -241,3 +241,63 @@ func (repo *mysqlEventRepository) MyEventData(limit, offset, idUser int) (respon
 
 	return toCoreList(dataEvents), nil
 }
+
+func (repo *mysqlEventRepository) AttendeeEventData(id int) (response []events.User, err error) {
+	var data []Attendee
+	var dataUser []events.User
+
+	var countCheck int64
+	checkEvent := repo.db.Table("events").Where("id = ?", id).Count(&countCheck)
+
+	if checkEvent.Error != nil {
+		return []events.User{}, fmt.Errorf("not found event")
+	}
+
+	if countCheck < 1 {
+		return []events.User{}, fmt.Errorf("not found event")
+	}
+
+	result := repo.db.Preload("User").Table("attendees").Where("event_id = ? AND status = ?", id, 1).Find(&data)
+
+	if result.Error != nil {
+		return []events.User{}, fmt.Errorf("failed show data")
+	}
+
+	for k := range data {
+		dataUser = append(dataUser, data[k].User.toUser())
+	}
+
+	return dataUser, nil
+}
+
+// func (repo *mysqlEventRepository) AttendeeEventData(id int) (response []map[string]interface{}, err error) {
+// 	var data []map[string]interface{}
+
+// 	result := repo.db.Table("attendees").Where("event_id = ? AND status = ?", id, 1).Find(&data)
+
+// 	if result.Error != nil {
+// 		return nil, result.Error
+// 	}
+
+// 	// var formatData []map[string]interface{}
+// 	var formatData []User
+
+// 	for key := range data {
+// 		var dataUser events.User
+
+// 		rs := repo.db.Table("users").Where("id = ?", data[key]["user_id"]).First(&dataUser)
+
+// 		if rs.Error != nil {
+// 			return nil, rs.Error
+// 		}
+
+// 		formatData[key].ID = uint(data[key]["user_id"].(int64))
+// 		formatData[key].Name = dataUser.Name
+// 		formatData[key].AvatarUrl = dataUser.AvatarUrl
+// 	}
+
+// 	// fmt.Println(formatData)
+// 	fmt.Println(data)
+
+// 	return data, nil
+// }
