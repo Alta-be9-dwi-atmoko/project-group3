@@ -38,7 +38,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.GET("/events", presenter.EventPresenter.AllEvent)
 	e.GET("/my-events", presenter.EventPresenter.MyEvent, _middleware.JWTMiddleware())
 	// attendee
-	e.GET("/attendee/:id", presenter.EventPresenter.AttendeeEvent)
+	e.GET("/attendees/:id", presenter.EventPresenter.AttendeeEvent)
 
 	// comments //
 	e.POST("/comments/:id", presenter.CommentPresenter.PostComment, _middleware.JWTMiddleware())
