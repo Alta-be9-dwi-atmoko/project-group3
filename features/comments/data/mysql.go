@@ -29,9 +29,9 @@ func (repo *mysqlCommentRepository) InsertData(input comments.Core) (row int, er
 	return int(resultCreate.RowsAffected), nil
 }
 
-func (repo *mysqlCommentRepository) SelectCommentByIdEvent(idEvent int) (data []comments.Core, err error) {
+func (repo *mysqlCommentRepository) SelectCommentByIdEvent(idEvent, limitint, offsetint int) (data []comments.Core, err error) {
 	dataComment := []Comment{}
-	result := repo.DB.Preload("User").Order("created_at DESC").Find(&dataComment).Where("event_id = ?", idEvent)
+	result := repo.DB.Limit(limitint).Offset(offsetint).Preload("User").Order("created_at DESC").Find(&dataComment).Where("event_id = ?", idEvent)
 	if result.Error != nil {
 		return []comments.Core{}, result.Error
 	}

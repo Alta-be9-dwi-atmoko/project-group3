@@ -23,8 +23,8 @@ func (uc *commentUseCase) CreateData(input comments.Core) (row int, err error) {
 	return row, err
 }
 
-func (uc *commentUseCase) GetCommentByIdEvent(idEvent int) (data []comments.Core, err error) {
-	data, err = uc.commentData.SelectCommentByIdEvent(idEvent)
+func (uc *commentUseCase) GetCommentByIdEvent(idEvent, limitint, offsetint int) (data []comments.Core, err error) {
+	data, err = uc.commentData.SelectCommentByIdEvent(idEvent, limitint, offsetint)
 	return data, err
 }
 

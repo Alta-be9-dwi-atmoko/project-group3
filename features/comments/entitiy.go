@@ -21,12 +21,12 @@ type User struct {
 
 type Business interface {
 	CreateData(input Core) (row int, err error)
-	GetCommentByIdEvent(idEvent int) (data []Core, err error)
+	GetCommentByIdEvent(idEvent, limitint, offsetint int) (data []Core, err error)
 	DeleteCommentById(idComment, idFromToken int) (row int, err error)
 }
 
 type Data interface {
 	InsertData(input Core) (row int, err error)
-	SelectCommentByIdEvent(idEvent int) (data []Core, err error)
+	SelectCommentByIdEvent(idEvent, limitint, offsetint int) (data []Core, err error)
 	DeleteCommentByIdComment(idComment, idFromToken int) (row int, err error)
 }

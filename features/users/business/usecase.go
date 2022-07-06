@@ -2,7 +2,10 @@ package business
 
 import (
 	"errors"
+	"fmt"
 	"project/group3/features/users"
+
+	_bcrypt "golang.org/x/crypto/bcrypt"
 )
 
 type userUseCase struct {
@@ -16,7 +19,7 @@ func NewUserBusiness(dataUser users.Data) users.Business {
 }
 
 func (uc *userUseCase) CreateData(input users.Core) (row int, err error) {
-	if input.Name == "" || input.Email == "" || input.Password == "" || input.AvatarUrl == "" {
+	if input.Name == "" || input.Email == "" || input.Password == "" {
 		return -1, errors.New("please make sure all fields are filled in correctly")
 	}
 	row, err = uc.userData.InsertData(input)
@@ -37,7 +40,11 @@ func (uc *userUseCase) UpdateData(input users.Core, idUser int) (row int, err er
 		userReq["email"] = input.Email
 	}
 	if input.Password != "" {
-		userReq["password"] = input.Password
+		passwordHashed, errorHash := _bcrypt.GenerateFromPassword([]byte(input.Password), 10)
+		if errorHash != nil {
+			fmt.Println("Error hash", errorHash.Error())
+		}
+		userReq["password"] = string(passwordHashed)
 	}
 	if input.AvatarUrl != "" {
 		userReq["avatar_url"] = input.AvatarUrl

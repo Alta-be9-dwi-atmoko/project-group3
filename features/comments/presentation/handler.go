@@ -48,8 +48,12 @@ func (h *CommentHandler) PostComment(c echo.Context) error {
 
 func (h *CommentHandler) GetComment(c echo.Context) error {
 	id := c.Param("id")
+	limit := c.QueryParam("limit")
+	offset := c.QueryParam("offset")
+	limitint, _ := strconv.Atoi(limit)
+	offsetint, _ := strconv.Atoi(offset)
 	idEvent, _ := strconv.Atoi(id)
-	result, errGet := h.commentBusiness.GetCommentByIdEvent(idEvent)
+	result, errGet := h.commentBusiness.GetCommentByIdEvent(idEvent, limitint, offsetint)
 	if errGet != nil {
 		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("failed to get data user"))
 	}
