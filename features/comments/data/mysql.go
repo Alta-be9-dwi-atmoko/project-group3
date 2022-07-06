@@ -2,6 +2,7 @@ package data
 
 import (
 	"errors"
+	"fmt"
 	"project/group3/features/comments"
 
 	"gorm.io/gorm"
@@ -19,7 +20,9 @@ func NewCommentRepository(db *gorm.DB) comments.Data {
 
 func (repo *mysqlCommentRepository) InsertData(input comments.Core) (row int, err error) {
 	comment := FromCore(input)
+	fmt.Println("comment: ", comment)
 	resultCreate := repo.DB.Create(&comment)
+	fmt.Println("resultCreateerror: ", resultCreate.Error)
 	if resultCreate.Error != nil {
 		return 0, resultCreate.Error
 	}
@@ -31,7 +34,7 @@ func (repo *mysqlCommentRepository) InsertData(input comments.Core) (row int, er
 
 func (repo *mysqlCommentRepository) SelectCommentByIdEvent(idEvent, limitint, offsetint int) (data []comments.Core, err error) {
 	dataComment := []Comment{}
-	result := repo.DB.Limit(limitint).Offset(offsetint).Preload("User").Order("created_at DESC").Find(&dataComment).Where("event_id = ?", idEvent)
+	result := repo.DB.Limit(limitint).Offset(offsetint).Preload("User").Order("created_at DESC").Where("event_id = ?", idEvent).Find(&dataComment)
 	if result.Error != nil {
 		return []comments.Core{}, result.Error
 	}
