@@ -40,7 +40,7 @@ func (h *CommentHandler) PostComment(c echo.Context) error {
 	}
 
 	if errCreate != nil {
-		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("your email is already registered"))
+		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("failed to add comment"))
 	}
 
 	return c.JSON(http.StatusOK, _helper.ResponseOkNoData("success"))
