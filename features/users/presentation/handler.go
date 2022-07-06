@@ -3,7 +3,6 @@ package presentation
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"time"
 
 	_middleware "project/group3/features/middlewares"
@@ -62,12 +61,7 @@ func (h *UserHandler) LoginAuth(c echo.Context) error {
 }
 
 func (h *UserHandler) PutUser(c echo.Context) error {
-	id := c.Param("id")
-	idUser, _ := strconv.Atoi(id)
 	idFromToken, _, _ := _middleware.ExtractToken(c)
-	if idUser != idFromToken {
-		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("you dont have access"))
-	}
 	userReq := _requestUser.User{}
 	err := c.Bind(&userReq)
 	if err != nil {
@@ -102,7 +96,7 @@ func (h *UserHandler) PutUser(c echo.Context) error {
 	userReq.AvatarUrl = url
 
 	dataUser := _requestUser.ToCore(userReq)
-	row, errUpd := h.userBusiness.UpdateData(dataUser, idUser)
+	row, errUpd := h.userBusiness.UpdateData(dataUser, idFromToken)
 	if errUpd != nil {
 		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("failed to update data users"))
 	}
@@ -123,13 +117,9 @@ func (h *UserHandler) GetByMe(c echo.Context) error {
 }
 
 func (h *UserHandler) DeleteByID(c echo.Context) error {
-	id := c.Param("id")
-	idUser, _ := strconv.Atoi(id)
 	idFromToken, _, _ := _middleware.ExtractToken(c)
-	if idFromToken != idUser {
-		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("you dont have access"))
-	}
-	row, errDel := h.userBusiness.DeleteDataById(idUser)
+
+	row, errDel := h.userBusiness.DeleteDataById(idFromToken)
 	if errDel != nil {
 		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("failed to delete data user"))
 	}

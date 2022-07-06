@@ -61,8 +61,8 @@ func (repo *mysqlUserRepository) LoginUserDB(authData users.AuthRequestData) (to
 	return token, userData.Name, userData.AvatarUrl, nil
 }
 
-func (repo *mysqlUserRepository) UpdateDataDB(data map[string]interface{}, idUser int) (row int, err error) {
-	result := repo.DB.Model(&User{}).Where("id = ?", idUser).Updates(data)
+func (repo *mysqlUserRepository) UpdateDataDB(data map[string]interface{}, idFromToken int) (row int, err error) {
+	result := repo.DB.Model(&User{}).Where("id = ?", idFromToken).Updates(data)
 	if result.Error != nil {
 		return 0, result.Error
 	}
@@ -83,8 +83,8 @@ func (repo *mysqlUserRepository) SelectDataByMe(idFromToken int) (data users.Cor
 	return dataUser.toCore(), nil
 }
 
-func (repo *mysqlUserRepository) DeleteDataByIdDB(idUser int) (row int, err error) {
-	result := repo.DB.Delete(&User{}, idUser)
+func (repo *mysqlUserRepository) DeleteDataByIdDB(idFromToken int) (row int, err error) {
+	result := repo.DB.Delete(&User{}, idFromToken)
 	if result.Error != nil {
 		return 0, result.Error
 	}

@@ -31,7 +31,7 @@ func (uc *userUseCase) LoginUser(authData users.AuthRequestData) (token, name, a
 	return token, name, avatarUrl, err
 }
 
-func (uc *userUseCase) UpdateData(input users.Core, idUser int) (row int, err error) {
+func (uc *userUseCase) UpdateData(input users.Core, idFromToken int) (row int, err error) {
 	userReq := map[string]interface{}{}
 	if input.Name != "" {
 		userReq["name"] = input.Name
@@ -49,7 +49,7 @@ func (uc *userUseCase) UpdateData(input users.Core, idUser int) (row int, err er
 	if input.AvatarUrl != "" {
 		userReq["avatar_url"] = input.AvatarUrl
 	}
-	row, err = uc.userData.UpdateDataDB(userReq, idUser)
+	row, err = uc.userData.UpdateDataDB(userReq, idFromToken)
 	return row, err
 }
 
@@ -58,7 +58,7 @@ func (uc *userUseCase) GetUserByMe(idFromToken int) (data users.Core, err error)
 	return data, err
 }
 
-func (uc *userUseCase) DeleteDataById(idUser int) (row int, err error) {
-	row, err = uc.userData.DeleteDataByIdDB(idUser)
+func (uc *userUseCase) DeleteDataById(idFromToken int) (row int, err error) {
+	row, err = uc.userData.DeleteDataByIdDB(idFromToken)
 	return row, err
 }
