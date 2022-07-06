@@ -21,6 +21,11 @@ type Core struct {
 	UpdatedAt   time.Time
 }
 
+type Attendee struct {
+	ID    int
+	Users []User
+}
+
 type User struct {
 	ID        int
 	Name      string
@@ -36,6 +41,7 @@ type Business interface {
 	JoinEventBusiness(idEvent, idUser, status int) (response int, err error)
 	AllEventBusiness(limit, offset int) (result []Core, err error)
 	MyEventBusiness(limit, offset, idUser int) (result []Core, err error)
+	AttendeeEventBusiness(idEvent int) (result []User, err error)
 }
 
 type Data interface {
@@ -47,4 +53,5 @@ type Data interface {
 	JoinEventData(idEvent, idUser, status int) (response int, err error)
 	AllEventData(limit, offset int) (result []Core, err error)
 	MyEventData(limit, offset, idUser int) (result []Core, err error)
+	AttendeeEventData(idEvent int) (result []User, err error)
 }

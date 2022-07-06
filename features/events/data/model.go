@@ -72,10 +72,26 @@ func (data *Event) toCore() events.Core {
 	}
 }
 
+func (data *User) toUser() events.User {
+	return events.User{
+		ID:        int(data.ID),
+		Name:      data.Name,
+		AvatarUrl: data.AvatarUrl,
+	}
+}
+
 func toCoreList(data []Event) []events.Core {
 	result := []events.Core{}
 	for key := range data {
 		result = append(result, data[key].toCore())
+	}
+	return result
+}
+
+func toCoreListUser(data []User) []events.User {
+	result := []events.User{}
+	for key := range data {
+		result = append(result, data[key].toUser())
 	}
 	return result
 }

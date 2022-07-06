@@ -279,3 +279,18 @@ func (h *EventHandler) MyEvent(c echo.Context) error {
 	return c.JSON(http.StatusOK, _helper.ResponseOkWithData("success", _responseEvent.FromCoreList(result)))
 
 }
+
+func (h *EventHandler) AttendeeEvent(c echo.Context) error {
+	id := c.Param("id")
+
+	idEvent, _ := strconv.Atoi(id)
+
+	result, err := h.EventBusiness.AttendeeEventBusiness(idEvent)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, _helper.ResponseFailed("failed to get all data"))
+	}
+
+	return c.JSON(http.StatusOK, _helper.ResponseOkWithData("success", result))
+
+}

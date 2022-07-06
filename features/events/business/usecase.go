@@ -66,3 +66,9 @@ func (uc *eventUseCase) MyEventBusiness(limit, offset, idUser int) (response []e
 
 	return response, err
 }
+
+func (uc *eventUseCase) AttendeeEventBusiness(id int) (response []events.User, err error) {
+	response, err = uc.eventData.AttendeeEventData(id)
+
+	return response, err
+}
