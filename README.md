@@ -20,7 +20,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd project-group2
+  cd project-group3
 ```
 
 ## Open Api
